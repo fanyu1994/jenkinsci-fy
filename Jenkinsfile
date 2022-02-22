@@ -10,7 +10,7 @@ pipeline {
       stage('下载代码') {
           steps {
         echo '****************************** download code start... ******************************'
-        git branch: '$branch',  url: '$gitUrl'
+        git branch: '$branch', credentialsId: 'ssh-jenkins', url: '$gitUrl'
           }
       }
 
