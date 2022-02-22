@@ -17,8 +17,8 @@ pipeline {
       stage('vue编译') {
           steps {
         echo '****************************** vue start... ******************************'
-        sh 'yarn install'
-        sh 'yarn run build'
+        sh 'npm install'
+        sh 'npm run build'
           }
       }
 
