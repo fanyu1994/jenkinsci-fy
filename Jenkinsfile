@@ -3,7 +3,7 @@ pipeline {
   environment {
       NAME = 'getfood-jenkins'
       APP = 'fanyu/getfood-jenkins:dev'
-      credentialsId = 'getfood-sk'
+      $credentialsId = 'getfood-sk'
   }
 
   stages {
