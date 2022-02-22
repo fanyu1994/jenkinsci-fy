@@ -3,14 +3,14 @@ pipeline {
   environment {
       NAME = 'getfood-jenkins'
       APP = 'fanyu/getfood-jenkins:dev'
-      $credentialsId = 'getfood-sk'
+      // $credentialsId = 'getfood-sk' credentialsId: '$credentialsId',
   }
 
   stages {
       stage('下载代码') {
           steps {
         echo '****************************** download code start... ******************************'
-        git branch: '$branch', credentialsId: '$credentialsId', url: '$gitUrl'
+        git branch: '$branch',  url: '$gitUrl'
           }
       }
 
