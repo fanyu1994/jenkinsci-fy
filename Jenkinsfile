@@ -17,8 +17,9 @@ pipeline {
       stage('vue编译') {
           steps {
         echo '****************************** vue start... ******************************'
-        sh 'npm install'
-        sh 'npm run build'
+        sh 'npm install cnpm -g --registry=https://registry.npm.taobao.org'
+        sh 'cnpm install'
+        sh 'cnpm run build'
           }
       }
 
