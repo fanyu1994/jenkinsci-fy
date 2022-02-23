@@ -1,5 +1,8 @@
 pipeline {
-  agent any
+  // agent any
+  agent {
+        docker { image 'node:16.13.1-alpine' }
+    }
   environment {
       NAME = 'getfood-jenkins'
       APP = 'fanyu/getfood-jenkins:dev'
@@ -17,7 +20,6 @@ pipeline {
       stage('vue编译') {
           steps {
         echo '****************************** vue start... ******************************'
-        sh 'npm install cnpm -g --registry=https://registry.npm.taobao.org'
         sh 'cnpm install'
         sh 'cnpm run build'
           }
