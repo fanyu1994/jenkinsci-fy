@@ -1,43 +1,30 @@
 pipeline {
-  agent any
-  environment {
-      NAME = 'getfood-jenkins'
-      APP = 'fanyu/getfood-jenkins:dev'
-      // $credentialsId = 'getfood-sk' credentialsId: '$credentialsId',
-  }
-
-  stages {
-      stage('下载代码') {
-          steps {
-        echo '****************************** download code start... ******************************'
-        git branch: '$branch', credentialsId: 'ssh-jenkins', url: '$gitUrl'
-          }
-      }
-
-      stage('vue编译') {
-          steps {
-        echo '****************************** vue start... ******************************'
-        sh 'pnpm '
-        sh 'pnpm build'
-          }
-      }
-
-      stage('构建Docker镜像') {
-          steps {
-        echo '****************************** delete container and image... ******************************'
-        sh 'docker ps -a|grep $NAME|awk \'{print $1}\'|xargs -i docker stop {}|xargs -i docker rm {}'
-        sh 'docker images|grep $NAME|grep dev|awk \'{print $3}\'|xargs -i docker rmi {}'
-
-        echo '****************************** build image... ******************************'
-        sh 'docker build --build-arg PROFILE=$nginxConfProfile -t $APP .'
-          }
-      }
-
-      stage('运行容器') {
-          steps {
-        echo '****************************** run start... ******************************'
-        sh 'docker run -d -p $appPort:80 --restart=always --name $NAME $APP'
-          }
-      }
-  }
+    agent {
+        docker {
+            image 'node:6-alpine'
+            args '-p 3000:3000'
+        }
+    }
+    environment { 
+        CI = 'true'
+    }
+    stages {
+        stage('Build') {
+            steps {
+                sh 'npm install'
+            }
+        }
+        stage('Test') {
+            steps {
+                sh './jenkins/scripts/test.sh'
+            }
+        }
+        stage('Deliver') { 
+            steps {
+                sh './jenkins/scripts/deliver.sh' 
+                input message: 'Finished using the web site? (Click "Proceed" to continue)' 
+                sh './jenkins/scripts/kill.sh' 
+            }
+        }
+    }
 }
