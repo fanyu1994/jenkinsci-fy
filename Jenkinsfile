@@ -1,8 +1,5 @@
 pipeline {
-  // agent any
-  agent {
-        docker { image 'node:16.13.1-alpine' }
-    }
+  agent any
   environment {
       NAME = 'getfood-jenkins'
       APP = 'fanyu/getfood-jenkins:dev'
@@ -20,8 +17,8 @@ pipeline {
       stage('vue编译') {
           steps {
         echo '****************************** vue start... ******************************'
-        sh 'cnpm install'
-        sh 'cnpm run build'
+        sh 'pnpm '
+        sh 'pnpm build'
           }
       }
 
